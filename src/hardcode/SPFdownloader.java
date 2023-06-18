@@ -1,55 +1,50 @@
+package hardcode;
+
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Scanner;
 
-public class Break {
-    private final Robot bot;
+public class SPFdownloader {
+    public static void main(String[] args) throws AWTException, IOException {
+        // Creates instance of Robot Class
+        Robot bot = new Robot();
+//        int x = 1920, y = 1080;
+//        bot.mouseMove( x, y );
+//
+//        bot.mousePress( InputEvent.BUTTON1_MASK );
+//        bot.mouseRelease( InputEvent.BUTTON1_MASK );
+//
+//        System.out.println( "Mouse clicked at: " + x + " : " + y );
 
-    public Break(Robot bot) {
-        this.bot = bot;
-    }
-
-    public void openChromeAndGoToURL() throws IOException {
-        Runtime.getRuntime().exec("cmd /c start chrome https://mxtoolbox.com/SuperTool.aspx");
+        // Opens Chrome and goes to MxToolbox SuperTool address
+        Runtime.getRuntime().exec("cmd /c start firefox https://mxtoolbox.com/SuperTool.aspx");
         bot.delay(2000);
-    }
-    public void clearAllSearchBar() throws IOException {
-        openChromeAndGoToURL();
-
-        bot.delay(2000);
-        bot.keyPress(KeyEvent.VK_CONTROL);
-        bot.keyPress(KeyEvent.VK_A);
-        bot.delay(100);
-        bot.keyRelease(KeyEvent.VK_A);
-        bot.keyRelease(KeyEvent.VK_CONTROL);
-        bot.delay(100);
-        bot.keyPress(KeyEvent.VK_BACK_SPACE);
-        bot.keyRelease(KeyEvent.VK_BACK_SLASH);
-        bot.delay(100);
-        bot.delay(2000);
-    }
-    public void switchToSpfLookupMode() throws IOException {
-        clearAllSearchBar();
-        bot.delay(2000);
+        // Writes spf: to search bar
         bot.keyPress(KeyEvent.VK_S);
         bot.keyRelease(KeyEvent.VK_S);
-        bot.delay(100);
         bot.keyPress(KeyEvent.VK_P);
         bot.keyRelease(KeyEvent.VK_P);
-        bot.delay(100);
         bot.keyPress(KeyEvent.VK_F);
         bot.keyRelease(KeyEvent.VK_F);
-        bot.delay(100);
         bot.keyPress(KeyEvent.VK_SHIFT);
         bot.keyPress(KeyEvent.VK_SEMICOLON);
-        bot.delay(100);
         bot.keyRelease(KeyEvent.VK_SEMICOLON);
         bot.keyRelease(KeyEvent.VK_SHIFT);
-        bot.delay(1000);
-    }
-    public void writeDomainAddressToSearchBar(String domain) throws IOException {
-        switchToSpfLookupMode();
+        bot.delay(4000);
+
+        //filepath of domain addresses file
+        //Path domainlist = Path.of("C:\\Users\\mabus\\Desktop\\list.txt");
+        //pulls domain address from .txt file to string
+        String domain = "socar.az";
+
+        // writes the domian address
         for(int i = 0; i < domain.length(); i++){
             switch (domain.charAt(i)) {
                 case 'a': bot.keyPress(KeyEvent.VK_A); break;
@@ -126,28 +121,27 @@ public class Break {
                     throw new IllegalArgumentException("Cannot type character " + domain.charAt(i));
             }
         }
+        // hits enter to search and saves .html file to destination path
         bot.keyPress(KeyEvent.VK_ENTER);
         bot.keyRelease(KeyEvent.VK_ENTER);
-        bot.delay(1000);
-        bot.delay(20000);
-    }
-    public void hitEnter(){
-        bot.keyPress(KeyEvent.VK_ENTER);
-        bot.keyRelease(KeyEvent.VK_ENTER);
-        bot.delay(1000);
-    }
-    public void clickSaveThisPage(String domain) throws IOException {
-        bot.delay(1000);
-        writeDomainAddressToSearchBar(domain);
-        bot.delay(1000);
-        bot.keyPress(KeyEvent.VK_CONTROL);
-        bot.keyPress(KeyEvent.VK_S);
-        bot.keyRelease(KeyEvent.VK_S);
-        bot.keyRelease(KeyEvent.VK_CONTROL);
-        bot.delay(1000);
-    }
-    public void changeFileNameAsDomainAddress(String domain) throws IOException {
-        clickSaveThisPage(domain);
+        bot.delay(15000);
+//        bot.keyPress(KeyEvent.VK_CONTROL);
+//        bot.keyPress(KeyEvent.VK_S);
+//        bot.keyRelease(KeyEvent.VK_S);
+//        bot.keyRelease(KeyEvent.VK_CONTROL);
+        int x = 750, y = 350;
+        bot.mouseMove( x, y );
+
+        bot.mousePress( InputEvent.BUTTON3_MASK);
+        bot.mouseRelease( InputEvent.BUTTON3_MASK);
+
+        bot.mouseMove(820, 445);
+
+        bot.mousePress( InputEvent.BUTTON1_MASK);
+        bot.mouseRelease( InputEvent.BUTTON1_MASK);
+
+        bot.delay(2000);
+        // writes domain name as file name
         for(int i = 0; i < domain.length(); i++){
             switch (domain.charAt(i)) {
                 case 'a': bot.keyPress(KeyEvent.VK_A); break;
@@ -226,6 +220,15 @@ public class Break {
         }
         bot.keyPress(KeyEvent.VK_PERIOD);
         bot.keyRelease(KeyEvent.VK_PERIOD);
+        //IF .HTML FORMAT IS WANTED
+//        bot.keyPress(KeyEvent.VK_H);
+//        bot.keyRelease(KeyEvent.VK_H);
+//        bot.keyPress(KeyEvent.VK_T);
+//        bot.keyRelease(KeyEvent.VK_T);
+//        bot.keyPress(KeyEvent.VK_M);
+//        bot.keyRelease(KeyEvent.VK_M);
+//        bot.keyPress(KeyEvent.VK_L);
+//        bot.keyRelease(KeyEvent.VK_L);
         bot.keyPress(KeyEvent.VK_T);
         bot.keyRelease(KeyEvent.VK_T);
         bot.keyPress(KeyEvent.VK_X);
@@ -235,48 +238,20 @@ public class Break {
         bot.delay(1000);
         bot.keyPress(KeyEvent.VK_ENTER);
         bot.keyRelease(KeyEvent.VK_ENTER);
-        bot.delay(1000);
-    }
-    // TODO Call hitEnter() method
-    public void categorizeDomainsInSeparateFiles(String domain) throws IOException {
-        changeFileNameAsDomainAddress(domain);
-        bot.delay(20000);
+        bot.delay(7000);
         Scanner scanner = new Scanner(new File("C:\\Users\\mabus\\Desktop\\spfrecords\\" + domain + ".txt"));
         while(scanner.hasNext()){
             String line = scanner.nextLine().toString();
-            if(line.contains("No SPF Record found")) {
-                System.out.println("Found! " + line);
-                FileWriter newWriter = new FileWriter("C:\\Users\\mabus\\Desktop\\NoSPF.txt", true);
-                BufferedWriter bufferedWriter = new BufferedWriter(newWriter);
-                bufferedWriter.write("\n");
-                bufferedWriter.write(domain);
-                bufferedWriter.close();
-                System.out.println("Successfully appended to NoSPF file. Check the file!");
-                break;
-            }else if(line.contains("More than one record found")){
-                System.out.println("Found! " + line);
-                FileWriter newWriter = new FileWriter("C:\\Users\\mabus\\Desktop\\MultipleSPFs.txt", true);
-                BufferedWriter bufferedWriter = new BufferedWriter(newWriter);
-                bufferedWriter.write("\n");
-                bufferedWriter.write(domain);
-                bufferedWriter.close();
-                System.out.println("Successfully appended to MultipleSPFs file. Check the file!");
-                break;
-            }else if (line.contains("SPF Record Published") || line.contains("SPF Record Deprecated") || line.contains("SPF Syntax Check")){
-                FileWriter newWriter = new FileWriter("C:\\Users\\mabus\\Desktop\\SPFfound.txt", true);
-                BufferedWriter bufferedWriter = new BufferedWriter(newWriter);
-                bufferedWriter.write("\n");
-                bufferedWriter.write(domain);
-                bufferedWriter.close();
-                System.out.println("Successfully appended to SPFfound file. Check the file!");
-                break;
-            }
+            if(line.contains("No SPF Record found")) System.out.println("Found! " + line);
         } scanner.close();
-        bot.delay(2000);
+
+        FileWriter newWriter = new FileWriter("C:\\Users\\mabus\\Desktop\\NoSPF.txt", true);
+        BufferedWriter bufferedWriter = new BufferedWriter(newWriter);
+        bufferedWriter.write("\n");
+        bufferedWriter.write(domain);
+        bufferedWriter.close();
+        System.out.println("Successfully appended. Check the file!");
+
+
     }
-
-
-
-
-
 }
