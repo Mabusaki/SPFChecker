@@ -16,6 +16,7 @@ public class Break {
     }
     public void clearAllSearchBar() throws IOException {
         openChromeAndGoToURL();
+
         bot.delay(2000);
         bot.keyPress(KeyEvent.VK_CONTROL);
         bot.keyPress(KeyEvent.VK_A);
